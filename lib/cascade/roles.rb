@@ -6,7 +6,7 @@ module Cascade
     def self.get(fqdn)
       begin
         response = HTTParty.get(Cascade.uri + '/v1/catalog/node/' + fqdn, timeout: 15)
-        JSON.parse(response.body)['Node']['Services']['cascade']['Tags']
+        JSON.parse(response.body)['Services']['cascade']['Tags']
       rescue
         []
       end
