@@ -2,7 +2,7 @@ require 'httparty'
 require 'json'
 
 module Cascade
-  module Discover
+  module Service
     def self.find(service)
       begin
         response = HTTParty.get(Cascade.uri + '/v1/catalog/service/' + service, timeout: 15)

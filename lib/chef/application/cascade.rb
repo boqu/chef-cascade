@@ -166,7 +166,7 @@ class Chef::Application::Cascade < Chef::Application
     # Get roles
     # TODO tried ohai but had to load it twice (obvious) Fix this
     client_json = {}
-    client_json['run_list'] = ::Cascade::Roles.get(`hostname --long`.strip).map{|role| "role[#{role}]"} 
+    client_json['run_list'] = ::Cascade::Role.get(`hostname --long`.strip).map{|role| "role[#{role}]"} 
 
     @chef_client_json = client_json
   

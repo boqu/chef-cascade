@@ -17,8 +17,8 @@
 
 require "cascade/config"
 require "cascade/version"
-require "cascade/roles"
-require "cascade/discover"
+require "cascade/role"
+require "cascade/service"
 
 module Cascade
   @@config = Cascade::Config.new

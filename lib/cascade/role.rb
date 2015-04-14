@@ -2,7 +2,7 @@ require 'httparty'
 require 'json'
 
 module Cascade
-  module Roles
+  module Role
     def self.get(fqdn)
       begin
         response = HTTParty.get(Cascade.uri + '/v1/catalog/node/' + fqdn, timeout: 15)
