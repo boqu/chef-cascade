@@ -3,7 +3,7 @@
 # ./chef-cascade - Run the chef client, in stand-alone mode
 #
 # Author:: Zachary Schneider (<schneider@boundary.com>)
-# Copyright:: Copyright (c) 2014 Boundary, Inc.
+# Copyright:: Copyright (c) 2015 Boundary, Inc.
 # License:: Apache License, Version 2.0
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -19,13 +19,13 @@
 # limitations under the License.
 
 # Add custom gem path
-ENV['GEM_PATH'] = '/opt/cascade/gems'
+ENV['GEM_PATH'] = '/opt/chef-cascade/gems'
 
 # For development
 $:.unshift(File.join(File.dirname(__FILE__), "..", "lib"))
 
 # For package based deployment
-$:.unshift '/opt/cascade/lib'
+$:.unshift '/opt/chef-cascade/lib'
 
 require 'chef/application/cascade'
 

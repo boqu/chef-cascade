@@ -1,3 +1,3 @@
 # Cascade
 
-A serf cluster management shell and chef runner
+Ruby chef cascade integration and runner

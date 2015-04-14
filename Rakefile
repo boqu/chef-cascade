@@ -1,4 +1,4 @@
-NAME = 'cascade'
+NAME = 'chef-cascade'
 PREFIX = '/opt'
 ITERATION = 1
 
