@@ -230,7 +230,7 @@ class Chef::Application::Cascade < Chef::Application
       end
 
       # Replace process if chef or cascade package is upgraded
-      exec "#{$0} #{ARGV.join(' ')} -s" if upgraded.include?('chef') or upgraded.include?('cascade')
+      exec "#{$0} #{ARGV.join(' ')} -s" if upgraded.include?('chef') or upgraded.include?('chef-cascade')
     end
   end
 end
