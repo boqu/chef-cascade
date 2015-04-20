@@ -5,7 +5,7 @@ class Chef
   class Handler
     class CascadeHandler < Chef::Handler
       def report
-        event = Hashie::Mash.new
+        event = ::Hashie::Mash.new
         event.name = 'cascade.cm'
         event.source = run_status.node.name
 
