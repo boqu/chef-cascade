@@ -29,6 +29,7 @@ require 'zk'
 require 'postgres-pr/connection'
 require 'mysql'
 require 'cascade'
+require 'chef/handler/cascade_handler'
 
 class Chef::Application::Cascade < Chef::Application
 
