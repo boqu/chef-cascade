@@ -163,6 +163,13 @@ class Chef::Application::Cascade < Chef::Application
 
     @output_color = Chef::Config[:color] ? :green : :none
 
+    # Define handler
+    cascade_handler = Chef::Handler::CascadeHandler.new
+
+    Chef::Config[:start_handlers] << cascade_handler
+    Chef::Config[:report_handlers] << cascade_handler
+    Chef::Config[:exception_handlers] << cascade_handler
+
     # Get roles
     # TODO tried ohai but had to load it twice (obvious) Fix this
     client_json = {}
