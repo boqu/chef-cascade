@@ -36,7 +36,7 @@ require 'json'
 begin
   event = JSON.parse(ARGF.read)[0]
 
-  payload = JSON.parse(Base64.decode64(event['payload']))
+  payload = JSON.parse(Base64.decode64(event['Payload']))
 
   if payload['status'] == 'run'
     exec 'sudo chef-cascade -L /var/log/chef-cascade.log -l info > /dev/null 2>&1'
