@@ -153,7 +153,7 @@ class Chef::Application::Cascade < Chef::Application
   option :ref_id,
     :short => "-r REFERENCE_ID",
     :long => "--ref REFERENCE_ID",
-    :description => "Reference ID for tracking",
+    :description => "Reference ID for tracking"
 
   attr_reader :chef_client_json
   attr_reader :output_color
