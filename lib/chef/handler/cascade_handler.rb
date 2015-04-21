@@ -9,6 +9,7 @@ class Chef
         event = Hashie::Mash.new
         event.name = 'cascade.cm'
         event.source = run_status.node.name
+        event.ref = Chef::Config[:ref_id]
 
         if !run_status.kind_of?(Chef::RunStatus) or elapsed_time.nil?
           event.status = 'start'
