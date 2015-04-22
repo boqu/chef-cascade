@@ -38,7 +38,7 @@ begin
 
   payload = JSON.parse(Base64.decode64(event['Payload']))
 
-  if payload['status'] == 'run'
+  if payload['msg'] == 'run'
     exec "sudo chef-cascade -L /var/log/chef-cascade.log -l info -r #{event['ID']} > /dev/null 2>&1"
   else
     exit 0
