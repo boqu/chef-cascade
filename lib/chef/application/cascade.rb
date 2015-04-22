@@ -185,6 +185,14 @@ class Chef::Application::Cascade < Chef::Application
   
     # Package Preinstall handling
     if Chef::Config[:skip_packages] == false
+      
+      event = Hashie::Mash.new
+      event.name = 'cascade.cm'
+      event.source = run_status.node.name
+      event.ref = Chef::Config[:ref_id]
+      event.status = 'meta'
+      ::Cascade::Event.fire(event)
+
       if Chef::Config[:packages] and supported? 
         yum_packages if Mixlib::ShellOut.new('which yum').run_command.status.success?
           
