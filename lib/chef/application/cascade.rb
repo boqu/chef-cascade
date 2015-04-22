@@ -191,7 +191,7 @@ class Chef::Application::Cascade < Chef::Application
       event.name = 'cascade.cm'
       event.source = @hostname
       event.ref = Chef::Config[:ref_id]
-      event.status = 'meta'
+      event.msg = 'meta'
       ::Cascade::Event.fire(event)
 
       if Chef::Config[:packages] and supported? 

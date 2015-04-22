@@ -12,7 +12,7 @@ class Chef
         event.ref = Chef::Config[:ref_id]
 
         if !run_status.kind_of?(Chef::RunStatus) or elapsed_time.nil?
-          event.status = 'start'
+          event.msg = 'start'
 
           ::Cascade::Event.fire(event)
 
@@ -20,13 +20,13 @@ class Chef
         end
 
         if run_status.failed?
-          event.status = 'fail'
+          event.msg = 'fail'
 
           ::Cascade::Event.fire(event)
         end
 
         if run_status.success?
-          event.status = 'success'
+          event.msg = 'success'
 
           ::Cascade::Event.fire(event)
         end
