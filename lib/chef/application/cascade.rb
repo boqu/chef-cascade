@@ -157,6 +157,7 @@ class Chef::Application::Cascade < Chef::Application
 
   attr_reader :chef_client_json
   attr_reader :output_color
+  attr_reader :hostname
 
   def initialize
     super
@@ -168,6 +169,8 @@ class Chef::Application::Cascade < Chef::Application
     Chef::Config[:solo] = true
 
     @output_color = Chef::Config[:color] ? :green : :none
+    # TODO tried ohai but had to load it twice (obvious) Fix this
+    @hostname = `hostname --long`.strip
 
     # Define handler
     cascade_handler = Chef::Handler::CascadeHandler.new
@@ -177,18 +180,16 @@ class Chef::Application::Cascade < Chef::Application
     Chef::Config[:exception_handlers] << cascade_handler
 
     # Get roles
-    # TODO tried ohai but had to load it twice (obvious) Fix this
     client_json = {}
-    client_json['run_list'] = ::Cascade::Role.get(`hostname --long`.strip).map{|role| "role[#{role}]"} 
+    client_json['run_list'] = ::Cascade::Role.get(@hostname).map{|role| "role[#{role}]"} 
 
     @chef_client_json = client_json
   
     # Package Preinstall handling
     if Chef::Config[:skip_packages] == false
-      
       event = Hashie::Mash.new
       event.name = 'cascade.cm'
-      event.source = run_status.node.name
+      event.source = @hostname
       event.ref = Chef::Config[:ref_id]
       event.status = 'meta'
       ::Cascade::Event.fire(event)
