@@ -158,7 +158,7 @@ class Chef::Application::Cascade < Chef::Application
   option :roles,
     :short => "-R Role,Role",
     :long => "--roles Role,Role",
-    :description => "Roles for runlist"
+    :description => "Roles for runlist",
     :proc => lambda{|roles|
       roles = roles.split(',')
     },
