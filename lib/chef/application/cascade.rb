@@ -161,7 +161,7 @@ class Chef::Application::Cascade < Chef::Application
     :description => "Roles for runlist"
     :proc => lambda{|roles|
       roles = roles.split(',')
-    }
+    },
     :default => (::File.exists('/etc/chef/roles.yml')) ? YAML.load_file('/etc/chef/roles.yml') : []
 
   attr_reader :chef_client_json
