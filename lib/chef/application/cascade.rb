@@ -155,6 +155,15 @@ class Chef::Application::Cascade < Chef::Application
     :long => "--ref REFERENCE_ID",
     :description => "Reference ID for tracking"
 
+  option :roles,
+    :short => "-R Role,Role",
+    :long => "--roles Role,Role",
+    :description => "Roles for runlist"
+    :proc => lambda{|roles|
+      roles = roles.split(',')
+    }
+    :default => (::File.exists('/etc/chef/roles.yml')) ? YAML.load_file('/etc/chef/roles.yml') : []
+
   attr_reader :chef_client_json
   attr_reader :output_color
   attr_reader :hostname
@@ -181,7 +190,7 @@ class Chef::Application::Cascade < Chef::Application
 
     # Get roles
     client_json = {}
-    client_json['run_list'] = ::Cascade::Role.get(@hostname).map{|role| "role[#{role}]"} 
+    client_json['run_list'] = get_roles 
 
     @chef_client_json = client_json
   
@@ -220,6 +229,12 @@ class Chef::Application::Cascade < Chef::Application
   end
 
   private
+
+  def get_roles
+    out "Cascade roles overidden!" unless Chef::Config[:roles].empty?
+    roles = (Chef::Config[:roles].empty?) ? ::Cascade::Role.get(@hostname) : Chef::Config[:roles]
+    roles.map{|role| "role[#{role}]"}
+  end
 
   def supported?
     return RUBY_PLATFORM.include? 'linux'
