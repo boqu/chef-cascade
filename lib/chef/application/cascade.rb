@@ -162,7 +162,7 @@ class Chef::Application::Cascade < Chef::Application
     :proc => lambda{|roles|
       roles = roles.split(',')
     },
-    :default => (::File.exists('/etc/chef/roles.yml')) ? YAML.load_file('/etc/chef/roles.yml') : []
+    :default => (::File.exist('/etc/chef/roles.yml')) ? YAML.load_file('/etc/chef/roles.yml') : []
 
   attr_reader :chef_client_json
   attr_reader :output_color
