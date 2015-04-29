@@ -151,12 +151,12 @@ class Chef::Application::Cascade < Chef::Application
     :default      => false
 
   option :ref_id,
-    :short => "-r REFERENCE_ID",
+    :short => "-R REFERENCE_ID",
     :long => "--ref REFERENCE_ID",
     :description => "Reference ID for tracking"
 
   option :roles,
-    :short => "-R Role,Role",
+    :short => "-r Role,Role",
     :long => "--roles Role,Role",
     :description => "Roles for runlist",
     :proc => lambda{|roles|
@@ -230,12 +230,6 @@ class Chef::Application::Cascade < Chef::Application
 
   private
 
-  def get_roles
-    out "Cascade roles overidden!" unless Chef::Config[:roles].empty?
-    roles = (Chef::Config[:roles].empty?) ? ::Cascade::Role.get(@hostname) : Chef::Config[:roles]
-    roles.map{|role| "role[#{role}]"}
-  end
-
   def supported?
     return RUBY_PLATFORM.include? 'linux'
   end
@@ -269,5 +263,11 @@ class Chef::Application::Cascade < Chef::Application
       # Replace process if chef or cascade package is upgraded
       exec "#{$0} #{ARGV.join(' ')} -s" if upgraded.include?('chef') or upgraded.include?('chef-cascade')
     end
+  end
+
+  def get_roles
+    out "Cascade roles overidden!" unless Chef::Config[:roles].empty?
+    roles = (Chef::Config[:roles].empty?) ? ::Cascade::Role.get() : Chef::Config[:roles]
+    roles.map{|role| "role[#{role}]"}
   end
 end
