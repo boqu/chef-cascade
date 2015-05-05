@@ -17,7 +17,8 @@ module Cascade
         service = {
           'ID' => "#{name}_#{type}",
           'Name' => name,
-          'Tags' => [type]
+          'Tags' => [type],
+          'Port' => port
         }  
 
         response = HTTParty.put(Cascade.uri + '/v1/agent/service/register', body: service.to_json, headers: {'Content-Type' => 'application/json'}, timeout: 15)
