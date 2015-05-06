@@ -28,10 +28,11 @@ module Cascade
       end
     end
 
-    def self.registered?(name, type)
+    def self.registered?(name, type, port)
       begin
         response = HTTParty.get(Cascade.uri + '/v1/agent/services', body: service.to_json, headers: {'Content-Type' => 'application/json'}, timeout: 15)
-        return (JSON.parse(response)["#{name}_#{type}"]['Service'] == name) ? true : false
+        services = JSON.parse(response)
+        return (services["#{name}_#{type}"]['Service'] == name && services["#{name}_#{type}"]['Port'] == port) ? true : false
       rescue
         false
       end
