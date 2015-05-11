@@ -10,7 +10,7 @@ if `uname -a`.include? 'Ubuntu'
   Dir.mkdir "#{Dir.pwd}/.gems" unless File.directory? "#{Dir.pwd}/.gems"
   ENV['PATH'] =  "#{Dir.pwd}/.gems/bin:#{ENV['PATH']}"
   ENV['GEM_HOME'] = "#{Dir.pwd}/.gems"
-  ENV['GEM_PATH'] = '/opt/chef/embedded/lib/ruby/gems/1.9.1'
+  ENV['GEM_PATH'] = '/opt/chef/embedded/lib/ruby/gems/2.1.0'
 end
 
 $:.unshift './lib'
@@ -60,7 +60,7 @@ end
 
 desc 'build debian package'
 task :deb => [:install_deps, :clean, :setup_dir, :copy_build_files] do
-  sh %{ fpm -t deb -s dir -n #{NAME} -v #{Cascade::VERSION} -a all --iteration #{ITERATION} -d chef -d libxslt1.1 --deb-user root --deb-group root -C ./build -p ./pkg . }
+  sh %{ fpm -t deb -s dir -n #{NAME} -v #{Cascade::VERSION} -a all --iteration #{ITERATION} -d chef --deb-user root --deb-group root -C ./build -p ./pkg . }
 end
 
 task :default => :deb
