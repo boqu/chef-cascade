@@ -6,10 +6,11 @@ class Chef
   class Handler
     class CascadeHandler < Chef::Handler
       def report
-        event = Hashie::Mash.new
-        event.name = 'cascade.cm'
-        event.source = run_status.node.name
-        event.ref = Chef::Config[:ref_id]
+        event = Hashie::Mash.new(
+          name: run_status.node.name,
+          source: @hostname,
+          ref: Chef::Config[:ref_id]
+        )
 
         if !run_status.kind_of?(Chef::RunStatus) or elapsed_time.nil?
           event.msg = 'start'

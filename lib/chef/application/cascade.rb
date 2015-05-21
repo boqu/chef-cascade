@@ -22,10 +22,12 @@ require 'chef/config'
 require 'chef/log'
 require 'fileutils'
 require 'highline'
-require 'postgres-pr/connection'
-require 'mysql'
 require 'cascade'
 require 'chef/handler/cascade_handler'
+
+# Required for automation
+require 'postgres-pr/connection'
+require 'mysql'
 
 class Chef::Application::Cascade < Chef::Application
 
@@ -202,11 +204,12 @@ class Chef::Application::Cascade < Chef::Application
 
     # Update package metadata
     if Chef::Config[:skip_packages] == false
-      event = Hashie::Mash.new
-      event.name = 'cascade.cm'
-      event.source = @hostname
-      event.ref = Chef::Config[:ref_id]
-      event.msg = 'meta'
+      event = Hashie::Mash.new(
+        name: 'cascade.cm',
+        source: @hostname,
+        ref: Chef::Config[:ref_id],
+        msg: 'meta'
+      )
       ::Cascade::Event.fire(event)
 
       if Chef::Config[:packages] and supported? 
