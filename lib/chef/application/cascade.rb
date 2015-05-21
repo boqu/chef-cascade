@@ -21,8 +21,6 @@ require 'chef/client'
 require 'chef/config'
 require 'chef/daemon'
 require 'chef/log'
-require 'chef/rest'
-require 'chef/config_fetcher'
 require 'fileutils'
 require 'highline'
 require 'zk'
@@ -145,8 +143,8 @@ class Chef::Application::Cascade < Chef::Application
 
   option :skip_packages,
     :short        => "-s",
-    :long         => "--skip-packages",
-    :description  => "Skip package updates",
+    :long         => "--skip-metadata-update",
+    :description  => "Skip package metadata update",
     :boolean      => true,
     :default      => false
 
@@ -167,6 +165,7 @@ class Chef::Application::Cascade < Chef::Application
   attr_reader :chef_client_json
   attr_reader :output_color
   attr_reader :hostname
+  attr_reader :pm_flavor
 
   def initialize
     super
@@ -178,23 +177,32 @@ class Chef::Application::Cascade < Chef::Application
     Chef::Config[:solo] = true
 
     @output_color = Chef::Config[:color] ? :green : :none
+    
     # TODO tried ohai but had to load it twice (obvious) Fix this
-    @hostname = `hostname --long`.strip
+    @hostname = Mixlib::ShellOut.new('hostname --long').run_command.stdout.strip
 
     # Define handler
     cascade_handler = Chef::Handler::CascadeHandler.new
-
     Chef::Config[:start_handlers] << cascade_handler
     Chef::Config[:report_handlers] << cascade_handler
     Chef::Config[:exception_handlers] << cascade_handler
 
     # Get roles
-    client_json = {}
-    client_json['run_list'] = get_roles 
+    client_config = {}
+    client_config['run_list'] = get_roles 
 
-    @chef_client_json = client_json
-  
-    # Package Preinstall handling
+    @chef_client_json = client_config
+    
+    case
+    when Mixlib::ShellOut.new('which yum').run_command.status.success?
+      @pm_flavor = :yum
+    when Mixlib::ShellOut.new('which apt-get').run_command.status.success?
+      @pm_flavor = :apt
+    else
+      @pm_flavor = nil
+    end
+
+    # Update package metadata
     if Chef::Config[:skip_packages] == false
       event = Hashie::Mash.new
       event.name = 'cascade.cm'
@@ -204,12 +212,21 @@ class Chef::Application::Cascade < Chef::Application
       ::Cascade::Event.fire(event)
 
       if Chef::Config[:packages] and supported? 
-        yum_packages if Mixlib::ShellOut.new('which yum').run_command.status.success?
+        yum_update if @pm_flavor == :yum
           
-        apt_packages if Mixlib::ShellOut.new('which apt-get').run_command.status.success?
+        apt_update if @pm_flavor == :apt
       else
         Chef::Log.error "Package installs only supported on Linux via (apt/yum)"
       end
+    end
+
+    # Install updated packages
+    if Chef::Config[:packages] and supported? 
+      yum_packages if @pm_flavor == :yum
+        
+      apt_packages if @pm_flavor == :apt
+    else
+      Chef::Log.error "Package installs only supported on Linux via (apt/yum)"
     end
   end
 
@@ -218,7 +235,6 @@ class Chef::Application::Cascade < Chef::Application
   end
 
   def run_application
-    
     begin
       run_chef_client
     rescue SystemExit => e
@@ -238,30 +254,35 @@ class Chef::Application::Cascade < Chef::Application
     $stdout.puts HighLine.color(message, @output_color)
   end
 
+  def yum_update
+    Chef::Log.error "Yum support not implemented"
+  end
+
   def yum_packages
     Chef::Log.error "Yum support not implemented"
   end
 
-  def apt_packages
+  def apt_update
     out "Updating package repository metadata..."
     Mixlib::ShellOut.new('apt-get update').run_command
+  end
 
-    upgraded = []
-
+  def apt_packages
     Chef::Config[:packages].each do |pkg|
       cmd = Mixlib::ShellOut.new("apt-get install -y #{pkg}")
       cmd.run_command
       
-      next if cmd.status.to_i != 0 # TODO don't fail silently 
+      if cmd.status.to_i != 0 
+        Chef::Log.error("failed to upgrade #{pkg}")
+        next
+      end
       
       unless cmd.stdout.include? 'already the newest version'
         out "Upgraded #{pkg} to #{cmd.stdout[/^Setting.*$/][/\(.*\)/]}" 
         
-        upgraded << pkg
+        # Replace immediately
+        exec "#{$0} #{ARGV.join(' ')} -s" if pkg == 'chef' or pkg == 'chef-cascade'
       end
-
-      # Replace process if chef or cascade package is upgraded
-      exec "#{$0} #{ARGV.join(' ')} -s" if upgraded.include?('chef') or upgraded.include?('chef-cascade')
     end
   end
 
