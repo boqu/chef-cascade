@@ -7,8 +7,8 @@ class Chef
     class CascadeHandler < Chef::Handler
       def report
         event = Hashie::Mash.new(
-          name: run_status.node.name,
-          source: @hostname,
+          name: 'cascade.cm,
+          source: run_status.node.name,
           ref: Chef::Config[:ref_id]
         )
 
