@@ -189,10 +189,10 @@ class Chef::Application::Cascade < Chef::Application
     Chef::Config[:report_handlers] << cascade_handler
     Chef::Config[:exception_handlers] << cascade_handler
 
-    # Get roles
+    # Set roles and node attributes
     client_config = {}
     client_config['run_list'] = get_roles 
-
+    client_config['override_attributes'] = ::Cascade::KeyValue.get("/cascade/nodes/#{@hostname}/attrs")
     @chef_client_json = client_config
     
     case

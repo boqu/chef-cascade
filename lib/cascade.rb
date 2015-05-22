@@ -18,6 +18,7 @@
 require "cascade/config"
 require "cascade/version"
 require "cascade/event"
+require "cascade/key_value"
 require "cascade/role"
 require "cascade/service"
 
