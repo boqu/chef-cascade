@@ -19,9 +19,11 @@ require 'chef'
 require 'chef/application'
 require 'chef/client'
 require 'chef/config'
+require 'chef/daemon'
 require 'chef/log'
-require 'fileutils'
+
 require 'highline'
+
 require 'cascade'
 require 'chef/handler/cascade_handler'
 
@@ -247,21 +249,23 @@ class Chef::Application::Cascade < Chef::Application
 
   private
 
-  def supported?
-    return RUBY_PLATFORM.include? 'linux'
+  # General functionality
+
+  def get_roles
+    out "Cascade roles overidden!" unless Chef::Config[:roles].empty?
+    roles = (Chef::Config[:roles].empty?) ? ::Cascade::Role.get() : Chef::Config[:roles]
+    roles.map{|role| "role[#{role}]"}
   end
 
   def out(message)
     $stdout.puts HighLine.color(message, @output_color)
   end
 
-  def yum_update
-    Chef::Log.error "Yum support not implemented"
+  def supported?
+    return RUBY_PLATFORM.include? 'linux'
   end
 
-  def yum_packages
-    Chef::Log.error "Yum support not implemented"
-  end
+  # Package systems
 
   def apt_update
     out "Updating package repository metadata..."
@@ -287,9 +291,11 @@ class Chef::Application::Cascade < Chef::Application
     end
   end
 
-  def get_roles
-    out "Cascade roles overidden!" unless Chef::Config[:roles].empty?
-    roles = (Chef::Config[:roles].empty?) ? ::Cascade::Role.get() : Chef::Config[:roles]
-    roles.map{|role| "role[#{role}]"}
+  def yum_update
+    Chef::Log.error "Yum support not implemented"
+  end
+
+  def yum_packages
+    Chef::Log.error "Yum support not implemented"
   end
 end
