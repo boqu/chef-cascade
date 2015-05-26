@@ -27,7 +27,7 @@ require 'highline'
 require 'cascade'
 require 'chef/handler/cascade_handler'
 
-# Required for automation
+# cookbook deps
 require 'postgres-pr/connection'
 require 'mysql'
 
@@ -192,7 +192,7 @@ class Chef::Application::Cascade < Chef::Application
     # Set roles and node attributes
     client_config = {}
     client_config['run_list'] = get_roles 
-    client_config['override_attributes'] = ::Cascade::KeyValue.get("/cascade/nodes/#{@hostname}/attrs")
+    client_config.merge! ::Cascade::KeyValue.get("/cascade/nodes/#{@hostname}/attrs")
     @chef_client_json = client_config
     
     case
@@ -266,6 +266,8 @@ class Chef::Application::Cascade < Chef::Application
   end
 
   # Package systems
+  # Would love to use chef primitives here, but using them outside of chef
+  # is not an option due to the way run_context is managed
 
   def apt_update
     out "Updating package repository metadata..."

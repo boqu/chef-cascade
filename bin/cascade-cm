@@ -1,6 +1,5 @@
 #!/opt/chef/embedded/bin/ruby
 #
-# ./chef-cascade - Run the chef client, in stand-alone mode
 #
 # Author:: Zachary Schneider (<schneider@boundary.com>)
 # Copyright:: Copyright (c) 2015 Boundary, Inc.
@@ -18,8 +17,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# TODO only really here to avoid chef startup overhead during message eval
-# maybe remove this later
+# TODO only really here to avoid chef startup overhead during consul watch 
+# message eval
 
 # Add custom gem path
 ENV['GEM_PATH'] = '/opt/chef-cascade/gems'
