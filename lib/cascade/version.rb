@@ -1,3 +1,3 @@
 module Cascade
-  VERSION = "0.1.49"
+  VERSION = "0.2.0"
 end
