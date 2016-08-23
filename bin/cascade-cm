@@ -1,4 +1,4 @@
-#!/opt/chef/embedded/bin/ruby
+#!/usr/bin/env ruby
 #
 #
 # Author:: Zachary Schneider (<schneider@boundary.com>)
