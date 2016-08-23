@@ -27,10 +27,6 @@ require 'highline'
 require 'cascade'
 require 'chef/handler/cascade_handler'
 
-# cookbook deps
-require 'postgres-pr/connection'
-require 'mysql'
-
 class Chef::Application::Cascade < Chef::Application
 
   option :config_file,
