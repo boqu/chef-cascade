@@ -50,7 +50,7 @@ task :deb => [:install_deps, :clean, :setup_dir, :copy_build_files] do
   sh %{ 
     fpm -t deb -s dir -n #{NAME} \
       -v #{Cascade::VERSION} \
-      --description #{DESCRIPTION} \
+      --description '#{DESCRIPTION}' \
       -a all \
       --iteration #{ITERATION} \
       -d chef \
