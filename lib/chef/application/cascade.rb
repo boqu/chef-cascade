@@ -27,6 +27,19 @@ require 'highline'
 require 'cascade'
 require 'chef/handler/cascade_handler'
 
+# Monkey patch chef node because xenial chef package is broken
+class Chef
+  class Node
+
+    def set_cookbook_attribute
+      return unless run_context.cookbook_collection
+      run_context.cookbook_collection.each do |cookbook_name, cookbook|
+        automatic_attrs[:cookbooks][cookbook_name][:version] = cookbook.version
+      end
+    end
+  end
+end
+
 class Chef::Application::Cascade < Chef::Application
 
   option :config_file,
