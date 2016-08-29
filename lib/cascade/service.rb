@@ -36,7 +36,7 @@ module Cascade
       begin
         response = HTTParty.get(Cascade.uri + '/v1/agent/services', body: service.to_json, headers: {'Content-Type' => 'application/json'}, timeout: 15)
         services = JSON.parse(response)
-        return (services["#{name}"]['Service'] == name && services["#{name}"]['Port'] == port) ? true : false
+        return (services["#{name}"]['Service'] == name) ? true : false
       rescue
         false
       end
