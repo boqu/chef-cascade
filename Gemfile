@@ -7,3 +7,4 @@ gemspec
 gem 'fog'
 gem 'fpm'
 gem 'treetop'
+gem 'httparty'
