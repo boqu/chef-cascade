@@ -185,6 +185,8 @@ class Chef::Application::Cascade < Chef::Application
     super
 
     Chef::Config[:solo] = true
+    Chef::Config[:solo_legacy_mode] = true
+    Chef::Config[:audit_mode] = :disabled    
 
     @output_color = Chef::Config[:color] ? :green : :none
     

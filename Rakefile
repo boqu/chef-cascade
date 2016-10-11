@@ -16,6 +16,7 @@ require 'cascade/version'
 
 desc 'Install Dependencies'
 task :install_deps do
+  sh %{ gem install bundler }
   sh %{ bundle update }
   sh %{ bundle clean --force }
 end
@@ -53,7 +54,8 @@ task :deb => [:install_deps, :clean, :setup_dir, :copy_build_files] do
       --description '#{DESCRIPTION}' \
       -a all \
       --iteration #{ITERATION} \
-      -d chef \
+      -d ruby \
+      --conflicts chef \
       --deb-user root \
       --deb-group root \
       -C ./build \
