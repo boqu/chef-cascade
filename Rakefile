@@ -52,7 +52,7 @@ task :deb => [:install_deps, :clean, :setup_dir, :copy_build_files] do
     fpm -t deb -s dir -n #{NAME} \
       -v #{Cascade::VERSION} \
       --description '#{DESCRIPTION}' \
-      -a all \
+      -a amd64 \
       --iteration #{ITERATION} \
       -d ruby \
       --conflicts chef \
