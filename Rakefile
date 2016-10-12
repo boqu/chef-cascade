@@ -1,6 +1,6 @@
 NAME = 'chef-cascade'
 PREFIX = '/opt'
-ITERATION = 2
+ITERATION = 3
 DESCRIPTION = 'An opinionated chef-client'
 
 BUILD_DIR = './build'
@@ -25,6 +25,7 @@ task :setup_dir do
   sh %{ mkdir -p #{BUILD_DIR}#{PREFIX}/#{NAME} }
   sh %{ mkdir -p #{BUILD_DIR}/usr/bin }
   sh %{ mkdir -p #{BUILD_DIR}/etc/cascade }
+  sh %{ mkdir -p #{BUILD_DIR}/etc/chef }
   sh %{ mkdir -p ./pkg }
 end
 
