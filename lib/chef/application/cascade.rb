@@ -250,7 +250,7 @@ class Chef::Application::Cascade < Chef::Application
   # General functionality
 
   def get_roles
-    out "Cascade roles overidden!" unless Chef::Config[:roles].empty?
+    out "Local roles utilized: #{Chef::Config[:roles].join(",")}" unless Chef::Config[:roles].empty?
     roles = (Chef::Config[:roles].empty?) ? ::Cascade::Role.get() : Chef::Config[:roles]
     roles.map{|role| "role[#{role}]"}
   end
