@@ -160,6 +160,14 @@ class Chef::Application::Cascade < Chef::Application
     },
     :default => (::File.exists?('/etc/chef/roles.yml')) ? YAML.load_file('/etc/chef/roles.yml') : []
 
+  option :phase,
+    :short        => "-p PHASE",
+    :long         => "--phase PHASE",
+    :description  => "Set the chef run phase (all, config)",
+    :proc         => lambda { |l| l.to_sym },
+    :default      => :all
+
+
   attr_reader :chef_client_json
   attr_reader :output_color
   attr_reader :hostname
@@ -203,7 +211,7 @@ class Chef::Application::Cascade < Chef::Application
     end
 
     # Update package metadata
-    if Chef::Config[:skip_packages] == false
+    if Chef::Config[:skip_packages] == false && Chef::Config[:phase] != :config
       event = Hashie::Mash.new(
         name: 'cascade.cm',
         source: @hostname,
