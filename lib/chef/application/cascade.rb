@@ -163,7 +163,7 @@ class Chef::Application::Cascade < Chef::Application
   option :phase,
     :short        => "-p PHASE",
     :long         => "--phase PHASE",
-    :description  => "Set the chef run phase (all, config)",
+    :description  => "Set the chef run phase (all, update, config)",
     :proc         => lambda { |l| l.to_sym },
     :default      => :all
 
