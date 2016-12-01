@@ -1,6 +1,6 @@
 NAME = 'chef-cascade'
 PREFIX = '/opt'
-ITERATION = 3
+ITERATION = 0
 DESCRIPTION = 'An opinionated chef-client'
 
 BUILD_DIR = './build'
