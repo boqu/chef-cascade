@@ -11,10 +11,10 @@ CASCADE_RUBY = ENV['CASCADE_RUBY'] || 'ruby'
 ENV['PATH'] =  "#{Dir.pwd}/.gems/bin:#{ENV['PATH']}"
 ENV['GEM_HOME'] = "#{Dir.pwd}/.gems"
 
-if RUBY == 'ruby'
+if CASCADE_RUBY == 'ruby'
   ENV['GEM_PATH'] = '/var/lib/gems/2.3.0'
 else
-  ENV['GEM_PATH'] = "/opt/#{RUBY}/lib/gems/2.3.0"
+  ENV['GEM_PATH'] = "/opt/#{CASCADE_RUBY}/lib/gems/2.3.0"
 end
 
 $:.unshift './lib'
@@ -58,8 +58,8 @@ end
 desc 'munge bin'
 task :munge_bin do
   if CASCADE_RUBY != 'ruby'
-    sh %{ sed -i 's /usr/bin/env\  /opt/#{RUBY}/bin/ ' #{BUILD_DIR}#{PREFIX}/#{NAME}/gems/bin/* }
-    sh %{ sed -i 's /usr/bin/env\  /opt/#{RUBY}/bin/ ' #{BUILD_DIR}#{PREFIX}/#{NAME}/bin/* }
+    sh %{ sed -i 's /usr/bin/env\  /opt/#{CASCADE_RUBY}/bin/ ' #{BUILD_DIR}#{PREFIX}/#{NAME}/gems/bin/* }
+    sh %{ sed -i 's /usr/bin/env\  /opt/#{CASCADE_RUBY}/bin/ ' #{BUILD_DIR}#{PREFIX}/#{NAME}/bin/* }
   end
 end
 
@@ -71,7 +71,7 @@ task :deb do
       --description '#{DESCRIPTION}' \
       -a amd64 \
       --iteration #{ITERATION} \
-      -d #{RUBY} \
+      -d #{CASCADE_RUBY} \
       --conflicts chef \
       --deb-user root \
       --deb-group root \
@@ -88,7 +88,7 @@ task :rpm do
       --description '#{DESCRIPTION}' \
       -a x86_64 \
       --iteration #{ITERATION} \
-      -d #{RUBY} \
+      -d #{CASCADE_RUBY} \
       --conflicts chef \
       --deb-user root \
       --deb-group root \
