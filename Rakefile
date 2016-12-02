@@ -5,7 +5,7 @@ DESCRIPTION = 'An opinionated chef-client'
 
 BUILD_DIR = './build'
 
-RUBY = ENV['RUBY'] || 'ruby'
+RUBY = ENV['CASCADE_RUBY'] || 'ruby'
 
 # Setup RUBY ENV
 ENV['PATH'] =  "#{Dir.pwd}/.gems/bin:#{ENV['PATH']}"
@@ -39,7 +39,7 @@ end
 
 desc 'Install Dependencies'
 task :install_deps do
-  sh %{ gem install bundler }
+  sh %{ gem install bundler } if RUBY = 'ruby'
   sh %{ bundle update }
   sh %{ bundle clean --force }
 end
