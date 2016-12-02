@@ -15,7 +15,7 @@ if CASCADE_RUBY == 'ruby'
   ENV['GEM_PATH'] = '/var/lib/gems/2.3.0'
 else
   ENV['PATH'] =  "/opt/#{CASCADE_RUBY}/bin:#{ENV['PATH']}"
-  ENV['GEM_PATH'] = "/opt/#{CASCADE_RUBY}/lib/gems/2.3.0"
+  ENV['GEM_PATH'] = "/opt/#{CASCADE_RUBY}/lib/ruby/gems/2.3.0"
 end
 
 $:.unshift './lib'
@@ -59,8 +59,8 @@ end
 desc 'munge bin'
 task :munge_bin do
   if CASCADE_RUBY != 'ruby'
-    sh %{ sed -i 's /usr/bin/env\  /opt/#{CASCADE_RUBY}/bin/ ' #{BUILD_DIR}#{PREFIX}/#{NAME}/gems/bin/* }
-    sh %{ sed -i 's /usr/bin/env\  /opt/#{CASCADE_RUBY}/bin/ ' #{BUILD_DIR}#{PREFIX}/#{NAME}/bin/* }
+    sh %{ sed -i 's /usr/bin/env\\  /opt/#{CASCADE_RUBY}/bin/ ' #{BUILD_DIR}#{PREFIX}/#{NAME}/gems/bin/* }
+    sh %{ sed -i 's /usr/bin/env\\  /opt/#{CASCADE_RUBY}/bin/ ' #{BUILD_DIR}#{PREFIX}/#{NAME}/bin/* }
   end
 end
 
