@@ -5,7 +5,7 @@ DESCRIPTION = 'An opinionated chef-client'
 
 BUILD_DIR = './build'
 
-RUBY = ENV['CASCADE_RUBY'] || 'ruby'
+CASCADE_RUBY = ENV['CASCADE_RUBY'] || 'ruby'
 
 # Setup RUBY ENV
 ENV['PATH'] =  "#{Dir.pwd}/.gems/bin:#{ENV['PATH']}"
@@ -39,7 +39,7 @@ end
 
 desc 'Install Dependencies'
 task :install_deps do
-  sh %{ gem install bundler } if RUBY = 'ruby'
+  sh %{ gem install bundler } if CASCADE_RUBY == 'ruby'
   sh %{ bundle update }
   sh %{ bundle clean --force }
 end
@@ -57,7 +57,7 @@ end
 
 desc 'munge bin'
 task :munge_bin do
-  if RUBY != 'ruby'
+  if CASCADE_RUBY != 'ruby'
     sh %{ sed -i 's /usr/bin/env\  /opt/#{RUBY}/bin/ ' #{BUILD_DIR}#{PREFIX}/#{NAME}/gems/bin/* }
     sh %{ sed -i 's /usr/bin/env\  /opt/#{RUBY}/bin/ ' #{BUILD_DIR}#{PREFIX}/#{NAME}/bin/* }
   end
