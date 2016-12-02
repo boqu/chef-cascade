@@ -60,7 +60,7 @@ desc 'munge bin'
 task :munge_bin do
   if CASCADE_RUBY != 'ruby'
     sh %{ sed -i 's /usr/bin/env\\  /opt/#{CASCADE_RUBY}/bin/ ' #{BUILD_DIR}#{PREFIX}/#{NAME}/gems/bin/* }
-    sh %{ sed -i 's /usr/bin/env\\  /opt/#{CASCADE_RUBY}/bin/ ' #{BUILD_DIR}#{PREFIX}/usr/bin/* }
+    sh %{ sed -i 's /usr/bin/env\\  /opt/#{CASCADE_RUBY}/bin/ ' #{BUILD_DIR}/usr/bin/* }
   end
 end
 
