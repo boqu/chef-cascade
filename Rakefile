@@ -14,6 +14,7 @@ ENV['GEM_HOME'] = "#{Dir.pwd}/.gems"
 if CASCADE_RUBY == 'ruby'
   ENV['GEM_PATH'] = '/var/lib/gems/2.3.0'
 else
+  ENV['PATH'] =  "/opt/#{CASCADE_RUBY}/bin:#{ENV['PATH']}"
   ENV['GEM_PATH'] = "/opt/#{CASCADE_RUBY}/lib/gems/2.3.0"
 end
 
