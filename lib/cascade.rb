@@ -1,6 +1,6 @@
 #
-# Author:: Zachary Schneider (<schneider@boundary.com>)
-# Copyright:: Copyright (c) 2015 Boundary, Inc.
+# Author:: Zachary Schneider (<zachary.schneider@instana.com>)
+# Copyright:: Copyright (c) 2016 Instana, Inc.
 # License:: Apache License, Version 2.0
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
