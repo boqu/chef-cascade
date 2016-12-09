@@ -294,16 +294,32 @@ class Chef::Application::Cascade < Chef::Application
         out "Upgraded #{pkg} to #{cmd.stdout[/^Setting.*$/][/\(.*\)/]}" 
         
         # Replace immediately
-        exec "#{$0} #{ARGV.join(' ')} -s" if pkg == 'chef' or pkg == 'chef-cascade'
+        exec "#{$0} #{ARGV.join(' ')} -s" if pkg == 'chef-cascade'
       end
     end
   end
 
   def yum_update
-    Chef::Log.error "Yum support not implemented"
+    out "Updating package repository metadata..."
+    Mixlib::ShellOut.new('yum makecache fast').run_command
   end
 
   def yum_packages
-    Chef::Log.error "Yum support not implemented"
+    Chef::Config[:packages].each do |pkg|
+      cmd = Mixlib::ShellOut.new("yum install -y #{pkg}")
+      cmd.run_command
+      
+      if cmd.status.to_i != 0 
+        Chef::Log.error("failed to upgrade #{pkg}")
+        next
+      end
+      
+      unless cmd.stdout.include? 'already installed and latest version'
+        puts "Upgraded #{pkg} to #{cmd.stdout[/^Installed:.*\n.*/].split(' ').last}" 
+        
+        # Replace immediately
+        exec "#{$0} #{ARGV.join(' ')} -s" if pkg == 'chef-cascade'
+      end
+    end
   end
 end
