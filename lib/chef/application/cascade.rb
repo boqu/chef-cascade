@@ -327,7 +327,7 @@ class Chef::Application::Cascade < Chef::Application
         out "Upgraded #{pkg} to #{cmd.stdout[/^(Updated|Installed):.*\n.*/].split(' ').last}" 
         
         # Replace immediately
-        exec "#{$0} #{ARGV.join(' ')} -s" if pkg == 'chef-cascade'
+        exec "#{$0} #{ARGV.join(' ')} -m" if pkg == 'chef-cascade'
       end
     end
   end
