@@ -139,10 +139,17 @@ class Chef::Application::Cascade < Chef::Application
     :description  => "Set maximum duration to wait for another client run to finish, default is indefinitely.",
     :proc         => lambda { |s| s.to_i }
 
+  option :skip_meta,
+    :short        => "-m",
+    :long         => "--skip-metadata-update",
+    :description  => "Skip metadata update",
+    :boolean      => true,
+    :default      => false
+
   option :skip_packages,
     :short        => "-s",
-    :long         => "--skip-metadata-update",
-    :description  => "Skip package metadata update",
+    :long         => "--skip-package-update",
+    :description  => "Skip package update",
     :boolean      => true,
     :default      => false
 
@@ -220,12 +227,14 @@ class Chef::Application::Cascade < Chef::Application
       )
       ::Cascade::Event.fire(event)
 
-      if Chef::Config[:packages] and supported? 
-        yum_update if @pm_flavor == :yum
+      if Chef::Config[:skip_meta] == false
+        if Chef::Config[:packages] and supported? 
+          yum_update if @pm_flavor == :yum
           
-        apt_update if @pm_flavor == :apt
-      else
-        Chef::Log.error "Package installs only supported on Linux via (apt/yum)"
+          apt_update if @pm_flavor == :apt
+        else
+          Chef::Log.error "Package installs only supported on Linux via (apt/yum)"
+        end
       end
     end
 
@@ -294,7 +303,7 @@ class Chef::Application::Cascade < Chef::Application
         out "Upgraded #{pkg} to #{cmd.stdout[/^Setting.*$/][/\(.*\)/]}" 
         
         # Replace immediately
-        exec "#{$0} #{ARGV.join(' ')} -s" if pkg == 'chef-cascade'
+        exec "#{$0} #{ARGV.join(' ')} -m" if pkg == 'chef-cascade'
       end
     end
   end
