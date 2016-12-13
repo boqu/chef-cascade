@@ -310,7 +310,7 @@ class Chef::Application::Cascade < Chef::Application
 
   def yum_update
     out "Updating package repository metadata..."
-    Mixlib::ShellOut.new('yum makecache fast').run_command
+    Mixlib::ShellOut.new('yum makecache -y fast').run_command
   end
 
   def yum_packages
