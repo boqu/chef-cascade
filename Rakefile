@@ -33,6 +33,7 @@ task :setup_dir do
   sh %{ mkdir -p .gems } unless Dir.exist?('.gems')
   sh %{ mkdir -p #{BUILD_DIR}#{PREFIX}/#{NAME} }
   sh %{ mkdir -p #{BUILD_DIR}/usr/bin }
+  sh %{ mkdir -p #{BUILD_DIR}/etc/profile.d }
   sh %{ mkdir -p #{BUILD_DIR}/etc/cascade }
   sh %{ mkdir -p #{BUILD_DIR}/etc/chef }
   sh %{ mkdir -p ./pkg }
@@ -49,6 +50,7 @@ task :copy_build_files do
   sh %{ cp -Rp ./lib  #{BUILD_DIR}#{PREFIX}/#{NAME} }
   sh %{ cp -Rp ./.gems  #{BUILD_DIR}#{PREFIX}/#{NAME}/gems }
   sh %{ cp -Rp ./bin/*  #{BUILD_DIR}/usr/bin }
+  sh %{ cp -Rp ./profile.sh #{BUILD_DIR}/etc/profile.d/chef-cascade.sh }
 end
 
 desc 'build gem'
