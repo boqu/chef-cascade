@@ -6,6 +6,8 @@ gemspec
 # production systems
 gem 'chef', '12.14.89'
 gem 'nio4r', '1.2.1'
+gem 'json', '1.8.3'
+gem 'ffi', '1.9.14'
 gem 'berkshelf'
 gem 'fog'
 gem 'fpm'
