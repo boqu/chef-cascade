@@ -206,6 +206,7 @@ class Chef::Application::Cascade < Chef::Application
     client_config = {}
     client_config['run_list'] = get_roles 
     client_config.merge! ::Cascade::KeyValue.get("/cascade/nodes/#{@hostname}/attrs")
+    client_config.merge! get_attrs
     @chef_client_json = client_config
     
     case
@@ -270,6 +271,10 @@ class Chef::Application::Cascade < Chef::Application
     out "Local roles utilized: #{Chef::Config[:roles].join(",")}" unless Chef::Config[:roles].empty?
     roles = (Chef::Config[:roles].empty?) ? ::Cascade::Role.get() : Chef::Config[:roles]
     roles.map{|role| "role[#{role}]"}
+  end
+
+  def get_attrs
+    ::File.exists?('/etc/chef/attrs.yml') ? YAML.load_file('/etc/chef/attrs.yml') : {}
   end
 
   def out(message)
