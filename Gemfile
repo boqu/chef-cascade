@@ -5,6 +5,7 @@ gemspec
 # Gems required for chef automation so we aren't compiling things on 
 # production systems
 gem 'chef', '12.14.89'
+gem 'niofr', '1.2.1'
 gem 'berkshelf'
 gem 'fog'
 gem 'fpm'
