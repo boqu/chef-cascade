@@ -330,7 +330,7 @@ class Chef::Application::Cascade < Chef::Application
         next
       end
       
-      unless cmd.stdout.include? 'already installed and latest version'
+      unless cmd.stdout.include? 'Nothing to do'
         out "Upgraded #{pkg} to #{cmd.stdout[/^(Updated|Installed):.*\n.*/].split(' ').last}"
         # Replace immediately
         exec "#{$0} #{ARGV.join(' ')} -m" if pkg == 'chef-cascade'
