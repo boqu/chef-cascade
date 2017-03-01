@@ -297,6 +297,7 @@ class Chef::Application::Cascade < Chef::Application
   def apt_packages
     Chef::Config[:packages].each do |pkg|
       cmd = Mixlib::ShellOut.new("apt-get install -y #{pkg}")
+      cmd.environment = {'LANG' => 'C'}
       cmd.run_command
       
       if cmd.status.to_i != 0 
@@ -321,6 +322,7 @@ class Chef::Application::Cascade < Chef::Application
   def yum_packages
     Chef::Config[:packages].each do |pkg|
       cmd = Mixlib::ShellOut.new("yum install -y #{pkg}")
+      cmd.environment = {'LANG' => 'C'}
       cmd.run_command
       
       if cmd.status.to_i != 0 
@@ -329,11 +331,7 @@ class Chef::Application::Cascade < Chef::Application
       end
       
       unless cmd.stdout.include? 'already installed and latest version'
-        begin
-          out "Upgraded #{pkg} to #{cmd.stdout[/^(Updated|Installed):.*\n.*/].split(' ').last}" 
-        rescue
-          out "Upgraded #{pkg}"
-        end
+        out "Upgraded #{pkg} to #{cmd.stdout[/^(Updated|Installed):.*\n.*/].split(' ').last}"
         # Replace immediately
         exec "#{$0} #{ARGV.join(' ')} -m" if pkg == 'chef-cascade'
       end
