@@ -100,4 +100,14 @@ task :rpm do
   }
 end
 
-task default: [ :clean, :setup_dir, :install_deps, :copy_build_files, :munge_bin, :deb, :rpm ]
+desc 'Sign RPM'
+task :sign_rpm do
+  if ENV['SIGN_RPM'] == "true"
+    rpms = Rake::FileList["./pkg/*.rpm"]
+    rpms.each do |rpm|
+      sh %{ /usr/bin/expect -c 'spawn rpm --addsign #{rpm}; expect -exact "Enter pass phrase: "; send -- "\r"; expect eof' }
+    end
+  end
+end
+
+task default: [ :clean, :setup_dir, :install_deps, :copy_build_files, :munge_bin, :deb, :rpm, :sign_rpm ]
