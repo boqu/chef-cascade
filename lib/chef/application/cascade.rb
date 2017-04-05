@@ -189,7 +189,10 @@ class Chef::Application::Cascade < Chef::Application
 
     Chef::Config[:solo] = true
     Chef::Config[:solo_legacy_mode] = true
-    Chef::Config[:audit_mode] = :disabled    
+    Chef::Config[:audit_mode] = :disabled  
+    Chef::Config[:cascade_state_dir] = '/var/chef/cascade/state'
+
+    FileUtils::mkdir_p Chef::Config[:cascade_state_dir]
 
     @output_color = Chef::Config[:color] ? :green : :none
     
