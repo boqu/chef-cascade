@@ -16,7 +16,7 @@ module Cascade
     def self.set(namespace, key, value)
       begin
         state_file = ::File.join(STATE_DIR, namespace+".yaml")
-        state = YAML.load_file(state_file)
+        state = (::File.exists?(state_file)) ? YAML.load_file(state_file) : {}
 
         state[key] = value
         File.open(state_file, 'w') do |f| 
@@ -32,7 +32,7 @@ module Cascade
     def self.set_once(namespace, key, value)
       begin
         state_file = ::File.join(STATE_DIR, namespace+".yaml")
-        state = YAML.load_file(state_file)
+        state = (::File.exists?(state_file)) ? YAML.load_file(state_file) : {}
 
         if state[key] == nil
           state[key] = value
