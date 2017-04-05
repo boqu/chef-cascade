@@ -21,6 +21,7 @@ require "cascade/event"
 require "cascade/key_value"
 require "cascade/role"
 require "cascade/service"
+require "cascade/state"
 
 module Cascade
   @@config = Cascade::Config.new
