@@ -192,8 +192,8 @@ class Chef::Application::Cascade < Chef::Application
     Chef::Config[:audit_mode] = :disabled  
     Chef::Config[:cascade_state_dir] = '/var/chef/cascade/state'
 
-    FileUtils::mkdir_p Cascade::State::STATE_DIR
-    FileUtils.chmod 750, Cascade::State::STATE_DIR
+    FileUtils::mkdir_p ::Cascade::State::STATE_DIR
+    FileUtils.chmod 750, ::Cascade::State::STATE_DIR
 
     @output_color = Chef::Config[:color] ? :green : :none
     
