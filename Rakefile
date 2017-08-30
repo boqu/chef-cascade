@@ -75,7 +75,6 @@ task :deb do
       -a amd64 \
       --iteration #{ITERATION} \
       -d #{CASCADE_RUBY} \
-      --conflicts chef \
       --deb-user root \
       --deb-group root \
       -C ./build \
@@ -92,7 +91,6 @@ task :rpm do
       -a x86_64 \
       --iteration #{ITERATION} \
       -d #{CASCADE_RUBY} \
-      --conflicts chef \
       --deb-user root \
       --deb-group root \
       -C ./build \
