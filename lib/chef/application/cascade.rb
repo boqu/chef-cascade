@@ -241,15 +241,15 @@ class Chef::Application::Cascade < Chef::Application
           Chef::Log.error "Package installs only supported on Linux via (apt/yum)"
         end
       end
-    end
 
-    # Install updated packages
-    if Chef::Config[:packages] and supported? 
-      yum_packages if @pm_flavor == :yum
+      # Install updated packages
+      if Chef::Config[:packages] and supported? 
+        yum_packages if @pm_flavor == :yum
         
-      apt_packages if @pm_flavor == :apt
-    else
-      Chef::Log.error "Package installs only supported on Linux via (apt/yum)"
+        apt_packages if @pm_flavor == :apt
+      else
+        Chef::Log.error "Package installs only supported on Linux via (apt/yum)"
+      end
     end
   end
 
