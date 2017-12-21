@@ -211,6 +211,7 @@ class Chef::Application::Cascade < Chef::Application
     client_config['run_list'] = get_roles 
     client_config.merge! ::Cascade::KeyValue.get("/cascade/nodes/#{@hostname}/attrs")
     client_config.merge! get_attrs
+    client_config.merge! get_secrets
     @chef_client_json = client_config
     
     case
@@ -258,6 +259,7 @@ class Chef::Application::Cascade < Chef::Application
   end
 
   def run_application
+    out "Local roles utilized: #{Chef::Config[:roles].join(",")}" unless Chef::Config[:roles].empty?
     begin
       run_chef_client
     rescue SystemExit => e
@@ -272,13 +274,22 @@ class Chef::Application::Cascade < Chef::Application
   # General functionality
 
   def get_roles
-    out "Local roles utilized: #{Chef::Config[:roles].join(",")}" unless Chef::Config[:roles].empty?
     roles = (Chef::Config[:roles].empty?) ? ::Cascade::Role.get() : Chef::Config[:roles]
     roles.map{|role| "role[#{role}]"}
   end
 
   def get_attrs
     ::File.exists?('/etc/chef/attrs.yml') ? YAML.load_file('/etc/chef/attrs.yml') : {}
+  end
+
+  # Load from safe root owned path for now
+  def get_secrets
+    if Chef::Config[:secrets_path] && ::File.exists?(Chef::Config[:secrets_path])
+      out "Updating secrets"
+      ::FileUtils.cp(Chef::Config[:secrets_path], '/etc/chef/secrets.yml')
+      ::FileUtils.chmod(0600, '/etc/chef/secrets.yml')
+    end
+    ::File.exists?('/etc/chef/secrets.yml') ? YAML.load_file('/etc/chef/secrets.yml') : {}
   end
 
   def out(message)
