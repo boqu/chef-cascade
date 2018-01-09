@@ -209,9 +209,9 @@ class Chef::Application::Cascade < Chef::Application
     # Set roles and node attributes
     client_config = {}
     client_config['run_list'] = get_roles 
-    client_config.merge! ::Cascade::KeyValue.get("/cascade/nodes/#{@hostname}/attrs")
-    client_config.merge! get_attrs
-    client_config.merge! get_secrets
+    Chef::Mixin::DeepMerge.deep_merge! ::Cascade::KeyValue.get("/cascade/nodes/#{@hostname}/attrs"), client_config
+    Chef::Mixin::DeepMerge.deep_merge! get_attrs, client_config
+    Chef::Mixin::DeepMerge.deep_merge! get_secrets, client_config
     @chef_client_json = client_config
     
     case
