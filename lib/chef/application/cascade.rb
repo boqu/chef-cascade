@@ -167,13 +167,18 @@ class Chef::Application::Cascade < Chef::Application
     },
     :default => (::File.exists?('/etc/chef/roles.yml')) ? YAML.load_file('/etc/chef/roles.yml') : []
 
+  option :attr_path,
+    :short => "-a ATTR_PATH",
+    :long => "--attr-path ATTR_PATH",
+    :description => "Path to attributes yaml file to merge at runtime",
+    :default => '/etc/chef/attrs.yml'
+
   option :phase,
     :short        => "-p PHASE",
     :long         => "--phase PHASE",
     :description  => "Set the chef run phase (all, update, config)",
     :proc         => lambda { |l| l.to_sym },
     :default      => :all
-
 
   attr_reader :chef_client_json
   attr_reader :output_color
@@ -279,7 +284,7 @@ class Chef::Application::Cascade < Chef::Application
   end
 
   def get_attrs
-    ::File.exists?('/etc/chef/attrs.yml') ? YAML.load_file('/etc/chef/attrs.yml') : {}
+    ::File.exists?(Chef::Config[:attr_path]) ? YAML.load_file(Chef::Config[:attr_path]) : {}
   end
 
   # Load from safe root owned path for now
