@@ -34,7 +34,7 @@ end
 
 desc 'Install Dependencies'
 task :install_deps do
-  sh %{ gem install bundler } if CASCADE_RUBY == 'ruby'
+  sh %{ gem install bundler }
   sh %{ bundle update }
   sh %{ bundle clean --force }
 end
