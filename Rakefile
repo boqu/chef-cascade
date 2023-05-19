@@ -7,6 +7,10 @@ BUILD_DIR = './build'
 
 CASCADE_RUBY = ENV['CASCADE_RUBY'] || 'ruby'
 
+# Setup RUBY ENV
+ENV['PATH'] =  "#{Dir.pwd}/.gems/bin:#{ENV['PATH']}"
+ENV['GEM_HOME'] = "#{Dir.pwd}/.gems"
+
 $:.unshift './lib'
 
 require 'cascade/version'
