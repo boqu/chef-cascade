@@ -34,7 +34,7 @@ end
 
 desc 'Install Dependencies'
 task :install_deps do
-  sh %{ gem install bundler }
+  sh %{ gem install bundler -v 2.3.26}
   sh %{ bundle update }
   sh %{ bundle clean --force }
 end
